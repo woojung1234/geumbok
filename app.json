@@ -7,7 +7,6 @@
     "icon": "./assets/images/icon.png",
     "scheme": "financeassistant",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": false,
     "ios": {
       "supportsTablet": true
     },
@@ -35,13 +34,6 @@
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
-        }
-      ],
-      [
-        "@react-native-voice/voice",
-        {
-          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone.",
-          "speechRecognitionPermission": "Allow $(PRODUCT_NAME) to securely recognize user speech."
         }
       ]
     ]
