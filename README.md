@@ -1,44 +1,30 @@
 # Finance Assistant
 
-A React Native Expo app with expo-router for financial assistance.
+완전히 JavaScript로만 작성된 React Native Expo 앱입니다.
 
-## Installation
+## 설치 방법
 
-1. Clone the repository
-```bash
-git clone https://github.com/woojung1234/geumbok.git
-cd geumbok
-```
-
-2. Install dependencies
 ```bash
 npm install
-```
-
-3. Start the development server
-```bash
 npx expo start
 ```
 
-## Fixed Issues
+## 특징
 
-- Updated dependencies to compatible versions
-- Fixed React Native version conflicts
-- Added proper voice recognition plugin configuration
-- Added network security config for Android
-- Updated app structure to use expo-router properly
-- Added RecoilRoot and SafeAreaProvider to root layout
+- ✅ JavaScript만 사용 (TypeScript 없음)
+- ✅ Expo SDK 53 사용
+- ✅ 깔끔한 UI
+- ✅ 금융 앱 테마
 
-## Important Notes
+## 실행
 
-- The App.js file has been replaced with expo-router structure
-- Main entry point is now app/_layout.tsx
-- Make sure to run `npm install` after pulling changes
-- For Android development, ensure you have the proper SDK installed
+```bash
+# 개발 서버 시작
+npm start
 
-## Scripts
+# Android
+npm run android
 
-- `npm start` - Start Expo development server
-- `npm run android` - Run on Android device/emulator
-- `npm run ios` - Run on iOS device/simulator
-- `npm run web` - Run in web browser
+# iOS  
+npm run ios
+```
