@@ -9,7 +9,8 @@ import {
   ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { voiceService } from '../services/voiceService';
+// 수정된 부분: voiceService를 default import로 변경
+import voiceService from '../services/voiceService';
 
 const VoiceDemo = ({ onVoiceCommand }) => {
   const [showDemo, setShowDemo] = useState(false);
@@ -24,7 +25,7 @@ const VoiceDemo = ({ onVoiceCommand }) => {
         '버스카드 충전 10000원',
         '마트 장보기 45000원',
         '병원비 15000원 결제',
-      ]
+      ],
     },
     {
       category: '조회 명령',
@@ -33,7 +34,7 @@ const VoiceDemo = ({ onVoiceCommand }) => {
         '이번 달 지출 얼마야',
         '복지서비스 알려줘',
         '통계 보여줘',
-      ]
+      ],
     },
     {
       category: '일반 대화',
@@ -42,8 +43,8 @@ const VoiceDemo = ({ onVoiceCommand }) => {
         '도움말',
         '사용법 알려줘',
         '고마워',
-      ]
-    }
+      ],
+    },
   ];
 
   const handleDemoCommand = (command) => {
@@ -58,7 +59,10 @@ const VoiceDemo = ({ onVoiceCommand }) => {
 
     // 부모 컴포넌트에 알림
     if (onVoiceCommand) {
-      onVoiceCommand(command, parsedCommand);
+      // HomeScreen의 handleVoiceCommand는 command 문자열만 받도록 되어 있으므로,
+      // command 문자열만 전달하거나, HomeScreen의 핸들러를 수정해야 합니다.
+      // 여기서는 원본 HomeScreen의 시그니처에 맞춰 command만 전달합니다.
+      onVoiceCommand(command);
     }
 
     // 모달 닫기
@@ -150,7 +154,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1,
     borderColor: '#27ae60',
-    marginTop: 10,
+    marginTop: 10, // VoiceDemo 컴포넌트 자체가 아니라, 이 버튼의 스타일이므로 유지
   },
   demoButtonText: {
     color: '#27ae60',

@@ -31,7 +31,7 @@ const QuickStats = ({ monthlyTotal, todayTotal }) => {
   );
 };
 
-const QuickStatsStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     backgroundColor: '#fff',
@@ -84,3 +84,4 @@ QuickStats.defaultProps = {
   monthlyTotal: 0,
   todayTotal: 0,
 };
+export default QuickStats;

@@ -11,11 +11,11 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { useUser } from '../../contexts/UserContext';
-import VoiceDemo from '../../components/VoiceDemo';
-import QuickStats from '../../components/QuickStats';
-import RecentExpenses from '../../components/RecentExpenses';
-import NotificationList from '../../components/NotificationList';
+import { useUser } from '../../contexts/UserContext.js';
+import VoiceDemo from '../../components/VoiceDemo.js'; // 이 부분은 이미 올바르게 되어 있습니다.
+import QuickStats from '../../components/QuickStats.js';
+import RecentExpenses from '../../components/RecentExpenses.js';
+import NotificationList from '../../components/NotificationList.js';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -79,8 +79,8 @@ export default function HomeScreen() {
     setRefreshing(false);
   };
 
+  // VoiceDemo에서 command (문자열)만 받도록 수정했으므로, parsedCommand는 여기서 사용하지 않습니다.
   const handleVoiceCommand = (command) => {
-    // 음성 명령 처리
     console.log('음성 명령:', command);
 
     if (command.includes('가계부') || command.includes('지출')) {
@@ -90,6 +90,8 @@ export default function HomeScreen() {
     } else if (command.includes('금복') || command.includes('대화')) {
       router.push('/chatbot');
     }
+    // 필요하다면 여기서 voiceService.parseVoiceCommand(command)를 호출하여
+    // parsedCommand를 활용할 수 있습니다.
   };
 
   if (!user) {
@@ -113,6 +115,7 @@ export default function HomeScreen() {
     <SafeAreaView style={styles.container}>
       <ScrollView
         style={styles.scrollView}
+        contentContainerStyle={{ paddingBottom: 80 }} // VoiceDemo 버튼이 가리지 않도록 패딩 추가
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
@@ -123,9 +126,9 @@ export default function HomeScreen() {
             <Text style={styles.greeting}>안녕하세요,</Text>
             <Text style={styles.userName}>{user.userName || '사용자'}님!</Text>
           </View>
-          <TouchableOpacity style={styles.notificationIcon}>
+          <TouchableOpacity onPress={() => router.push('/notifications')} style={styles.notificationIcon}>
             <Ionicons name="notifications" size={24} color="#666" />
-            {dashboardData.notifications.some(n => !n.isRead) && (
+            {dashboardData.notifications.filter(n => !n.isRead).length > 0 && (
               <View style={styles.notificationBadge} />
             )}
           </TouchableOpacity>
@@ -165,14 +168,14 @@ export default function HomeScreen() {
         </View>
 
         {/* 최근 지출 내역 */}
-        <RecentExpenses expenses={dashboardData.recentExpenses} />
+        <RecentExpenses expenses={dashboardData.recentExpenses} router={router} />
 
         {/* 알림 목록 */}
-        <NotificationList notifications={dashboardData.notifications} />
+        <NotificationList notifications={dashboardData.notifications} router={router} />
       </ScrollView>
 
-      {/* 음성 데모 버튼 */}
-      <View style={styles.voiceDemo}>
+      {/* 음성 데모 버튼 - 화면 하단에 고정 */}
+      <View style={styles.voiceDemoContainer}>
         <VoiceDemo onVoiceCommand={handleVoiceCommand} />
       </View>
     </SafeAreaView>
@@ -191,8 +194,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 20,
-    paddingTop: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
   },
   greeting: {
     fontSize: 16,
@@ -206,41 +209,46 @@ const styles = StyleSheet.create({
   },
   notificationIcon: {
     position: 'relative',
+    padding: 5, // 터치 영역 확보
   },
   notificationBadge: {
     position: 'absolute',
-    top: -2,
-    right: -2,
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    top: 0,
+    right: 0,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
     backgroundColor: '#e74c3c',
+    borderWidth: 1,
+    borderColor: '#fff'
   },
   quickActions: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingHorizontal: 20,
-    marginBottom: 20,
+    paddingHorizontal: 15, // 양쪽 간격 살짝 줄임
+    marginBottom: 25,
+    marginTop: 10,
   },
   actionButton: {
     backgroundColor: '#fff',
-    padding: 20,
+    paddingVertical: 15, // 세로 패딩 살짝 줄임
+    paddingHorizontal: 10, // 가로 패딩
     borderRadius: 15,
     alignItems: 'center',
     flex: 1,
-    marginHorizontal: 5,
+    marginHorizontal: 5, // 버튼 사이 간격
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 1, // 그림자 약하게
     },
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 5,
+    shadowOpacity: 0.05, // 그림자 더 약하게
+    shadowRadius: 2, // 그림자 부드럽게
+    elevation: 2, // 안드로이드 그림자
   },
   actionButtonText: {
     marginTop: 8,
-    fontSize: 14,
+    fontSize: 13, // 폰트 크기 살짝 줄임
     fontWeight: '600',
     color: '#2c3e50',
   },
@@ -255,6 +263,7 @@ const styles = StyleSheet.create({
     color: '#666',
     marginTop: 20,
     marginBottom: 30,
+    textAlign: 'center',
   },
   loginButton: {
     backgroundColor: '#2e78b7',
@@ -262,9 +271,16 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 25,
   },
-  voiceDemo: {
+  loginButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  // VoiceDemo 버튼을 담을 컨테이너 스타일 수정
+  voiceDemoContainer: {
     position: 'absolute',
-    bottom: 30,
-    right: 20,
+    bottom: 20, // 하단 여백
+    right: 20,  // 우측 여백
+    // backgroundColor: 'transparent', // 필요한 경우 배경색 설정
   },
 });

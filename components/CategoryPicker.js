@@ -527,7 +527,7 @@ const CategoryPicker = ({ categories, selectedCategory, onSelect }) => {
   );
 };
 
-const CategoryPickerStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     marginBottom: 20,
   },
@@ -563,3 +563,5 @@ const CategoryPickerStyles = StyleSheet.create({
     color: '#fff',
   },
 });
+
+export default CategoryPicker;
