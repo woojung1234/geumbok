@@ -44,9 +44,6 @@
           "speechRecognitionPermission": "Allow $(PRODUCT_NAME) to securely recognize user speech."
         }
       ]
-    ],
-    "experiments": {
-      "typedRoutes": true
-    }
+    ]
   }
 }
