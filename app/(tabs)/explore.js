@@ -38,13 +38,6 @@ export default function ExploreScreen() {
             Monitor your investments and track their performance over time.
           </Text>
         </View>
-        
-        <View style={styles.cardContainer}>
-          <Text style={styles.cardTitle}>📊 Reports</Text>
-          <Text style={styles.cardText}>
-            Generate detailed financial reports to understand your financial health.
-          </Text>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
